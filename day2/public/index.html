@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Assignment Day 2</title>
+  <style>
+    .img-responsive {
+      height: 300px;
+      width: 300px;
+    }
+    .progress-bar-container, .progress {
+      height: 20px;
+      width: 400px;
+    }
+  </style>
+</head>
+<body>
+  <div id="root">Loading...</div>
+  <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+  <script>
+    function UserProfile(props) {
+        return React.createElement('div', {}, 
+            React.createElement('h3', {}, props.userName),
+            React.createElement('img', {
+                className: 'img-responsive',
+                src: props.avatar
+            })
+        );
+    }
+
+    const ProgressBar = function(props) {
+      return React.createElement('div', {
+        className: 'progress-bar-container',
+        style: {
+          backgroundColor: props.backgroundColor
+        }
+      }, React.createElement('div', {
+        className: 'progress',
+        style: {
+          backgroundColor: props.progessColor,
+          width: props.width + '%'
+        }
+      }))
+    };
+
+    const defaultProps = {
+      backgroundColor: '#d9d9d9',
+      progessColor: '#0866EE',
+      width: 50
+    }
+
+    ProgressBar.defaultProps = defaultProps;
+
+    let checked = true; 
+
+    function Toggle(props) {
+      function handleCheckedChange() {
+        const handler = props.checkedChange || function() {};
+        handler(!props.checked);
+      }
+      const classList = 'toggle-wrapper ' + (props.checked ? 'checked' : ''); 
+      return (
+        React.createElement('div', {
+          className: classList,
+          tabIndex: 0,
+          onClick: handleCheckedChange
+        },
+          React.createElement('div', {
+            className: 'toggle'
+          })
+        )
+      );
+    }
+
+    function handleOnChange(e) {
+      console.log(e.nativeEvent);
+    }
+
+    const App = function() {
+      React.createElement('div', {},
+        React.createElement(UserProfile, {
+            userName: 'Thor',
+            avatar: 'https://c1-ebgames.eb-cdn.com.au/merchandising/images/packshots/8278964f71bf44b8a3a9896d8557d6dc_Large.png'
+        }),
+        React.createElement(UserProfile, {
+          userName: 'Superman',
+          avatar: 'https://www.stuffedwithplushtoys.com/assets/alt_1/DC9001.jpg?20190612121750'
+        }),
+        React.createElement(ProgressBar),
+        React.createElement('input', {
+          onChange: handleOnChange
+        }),
+        React.createElement(Toggle, {
+          checked: checked,
+          checkedChange: function(c) {
+            c = checked;
+            ReactDOM.render(App, root);
+          }
+          })
+      );
+    }
+    ReactDOM.render(App(), root);
+  </script>
+</body>
+</html>
